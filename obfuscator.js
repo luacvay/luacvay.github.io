@@ -1,29 +1,44 @@
-// A simplified Lua obfuscator implemented in JavaScript
-function obfuscateLuaCode(inputCode) {
-    if (!inputCode) return "Error: No input provided!";
+function obfuscate() {
+    const inputCode = document.getElementById("inputCode").value;
 
-    let obfuscated = inputCode;
+    if (!inputCode.trim()) {
+        alert("Please enter LuaU code to obfuscate!");
+        return;
+    }
 
-    // Example: Add garbage logic
-    obfuscated = obfuscated
-        .replace(/function\s+([\w_]+)/g, (_, funcName) => {
-            const junk = `_${Math.random().toString(36).slice(2, 8)}`;
-            return `function ${funcName}${junk}`;
-        });
+    // Custom VM and encoding logic
+    const encode = (str) => {
+        const key = 129; // Simple XOR key
+        return str
+            .split("")
+            .map((char) => char.charCodeAt(0) ^ key)
+            .map((code) => String.fromCharCode(code))
+            .join("");
+    };
 
-    // Example: Encode strings
-    obfuscated = obfuscated.replace(/"(.*?)"/g, (_, str) => {
-        const encoded = str.split("").map(c => c.charCodeAt(0)).join(",");
-        return `string.char(${encoded})`;
-    });
+    const createVM = (encodedCode) => {
+        return `
+local encoded = "${encodedCode}"
+local decode = function(data)
+    local key = 129
+    local result = ""
+    for i = 1, #data do
+        local char = data:sub(i, i)
+        result = result .. string.char(string.byte(char) ~ key)
+    end
+    return result
+end
 
-    // Example: Add random comments
-    const comments = [
-        "-- Garbage comment",
-        "-- Obfuscated by AdvancedLuaObfuscator",
-        "-- Generated dynamically",
-    ];
-    obfuscated = `${comments[Math.floor(Math.random() * comments.length)]}\n${obfuscated}`;
+local chunk = load(decode(encoded))
+chunk()
+`;
+    };
 
-    return obfuscated;
+    // Obfuscation process
+    const encodedCode = encode(inputCode);
+    const obfuscatedScript = createVM(encodedCode);
+
+    // Display obfuscated code
+    const outputCode = document.getElementById("outputCode");
+    outputCode.textContent = obfuscatedScript;
 }

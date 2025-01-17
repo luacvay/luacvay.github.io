@@ -3,15 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lua Obfuscator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>LuaU Obfuscator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+        textarea {
+            width: 90%;
+            max-width: 800px;
+            height: 200px;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 14px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            width: 90%;
+            max-width: 800px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+        }
+    </style>
 </head>
 <body>
-    <h1>Lua Obfuscator</h1>
-    <textarea id="inputCode" placeholder="Enter your Lua script here"></textarea>
-    <button id="obfuscateButton">Obfuscate</button>
-    <textarea id="outputCode" placeholder="Obfuscated code will appear here"></textarea>
+    <h1>LuaU Obfuscator</h1>
+    <textarea id="inputCode" placeholder="Enter your LuaU script here..."></textarea>
+    <button onclick="obfuscate()">Obfuscate</button>
+    <h3>Obfuscated Code:</h3>
+    <div class="output" id="outputCode"></div>
+
     <script src="obfuscator.js"></script>
-    <script src="app.js"></script>
 </body>
 </html>
