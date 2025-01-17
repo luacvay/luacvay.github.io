@@ -1,49 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced LuaU Obfuscator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1e1e2f;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        textarea {
-            width: 80%;
-            height: 150px;
-            margin: 10px 0;
-            background-color: #2e2e3e;
-            color: #ffffff;
-            border: none;
-            padding: 10px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #0078d7;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #005a9e;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lua Obfuscator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #output {
+      white-space: pre-wrap;
+      background: #f0f0f0;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
 <body>
-    <h1>Advanced LuaU Obfuscator</h1>
-    <textarea id="inputCode" placeholder="Enter your LuaU code here"></textarea>
-    <input type="text" id="garbageVariable" placeholder="Garbage variable name" style="margin: 10px; padding: 10px;">
-    <button id="obfuscateButton">Obfuscate</button>
-    <textarea id="outputCode" readonly placeholder="Your obfuscated code will appear here"></textarea>
-    <script src="app.js"></script>
+  <h1>Lua Obfuscator</h1>
+  <textarea id="input" placeholder="Paste your Lua code here..."></textarea>
+  <button onclick="obfuscate()">Obfuscate</button>
+  <button onclick="clearFields()">Clear</button>
+  <h2>Obfuscated Code</h2>
+  <div id="output"></div>
+  <script src="obfuscator.js"></script>
 </body>
 </html>
