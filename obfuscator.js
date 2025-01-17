@@ -6,11 +6,18 @@ function obfuscate() {
     return;
   }
 
-  // Step 1: Rename Variables with Obscure Names
+  // Step 1: Minify the Lua Code
+  const minifiedCode = inputCode
+    .replace(/--.*?\n/g, "") // Remove comments
+    .replace(/\s+/g, " ") // Collapse whitespace
+    .replace(/\s*([=\(\)\{\},;])\s*/g, "$1") // Remove spaces around operators
+    .trim();
+
+  // Step 2: Rename Variables with Obscure Names
   const renamedVariables = {};
   let variableCounter = 0;
 
-  let obfuscatedCode = inputCode
+  let obfuscatedCode = minifiedCode
     .replace(/\b[a-zA-Z_][a-zA-Z0-9_]*\b/g, (match) => {
       if (!renamedVariables[match]) {
         renamedVariables[match] = `_${Math.random().toString(36).substr(2, 8)}`;
@@ -18,27 +25,31 @@ function obfuscate() {
       return renamedVariables[match];
     })
 
-    // Step 2: Encrypt Strings with Layered Encoding
+    // Step 3: Encrypt Strings with Layered Encoding
     .replace(/"([^"]*)"|'([^']*)'/g, (match, p1, p2) => {
       const str = p1 || p2;
       const encrypted = Array.from(str)
         .map((char) => `string.char(${char.charCodeAt(0) ^ 0x55})`)
         .join(" .. ");
-      return `".." .. (${encrypted}) .. ".."`;
+      return `(${encrypted})`;
     });
 
-  // Step 3: Insert Junk Code
-  const junkCode = `
-    local function junk()
-      for i = 1, math.random(10, 100) do
-        _junkVar${Math.random().toString(36).substr(2, 8)} = math.random()
-      end
-    end
-    junk()
-  `;
-  obfuscatedCode = obfuscatedCode.split(";").join(`; ${junkCode}`);
+  // Step 4: Insert Extensive Junk Code
+  const junkLine = () => {
+    const randomChars = Array.from({ length: Math.random() * 100 + 50 }, () => {
+      const pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+      return pool[Math.floor(Math.random() * pool.length)];
+    }).join("");
+    return `-- ${randomChars}\n`;
+  };
 
-  // Step 4: Add Runtime Control Flow Obfuscation
+  const junkBlock = Array.from({ length: 100 + Math.random() * 200 })
+    .map(junkLine)
+    .join("");
+
+  obfuscatedCode = `${junkBlock}${obfuscatedCode}${junkBlock}`;
+
+  // Step 5: Add Runtime Control Flow Obfuscation
   const wrappedCode = `
     local function _hiddenExec()
       local _key = 0xAA
@@ -52,12 +63,14 @@ function obfuscate() {
     _hiddenExec()
   `;
 
-  // Step 5: Add a Layer of Recursive Control Flow
+  // Step 6: Add a Recursive Execution Layer with More Junk Code
   const recursiveCode = `
     local function recursiveLayer(n)
       if n <= 0 then
         ${wrappedCode}
       else
+        -- Recursive Junk Layer
+        ${junkBlock}
         recursiveLayer(n - 1)
       end
     end
